@@ -19,17 +19,18 @@ export type DirectoryListingProps = {
 
 const GroupedDirectoryListings = (props: DirectoryListingProps) => {
   const contents = props.contents.filter(row => !row.name.startsWith("."));
-
-  if (contents.length <= 25) {
-    return <DirectoryListing contents={contents} basepath={props.basepath} />;
+	const sortedContents = contents.sort((a, b) => {return new Date(b.last_modified) - new Date(a.last_modified)}).slice(0,100);
+	console.log(sortedContents);
+  if (sortedContents.length <= 25) {
+    return <DirectoryListing contents={sortedContents} basepath={props.basepath} />;
   }
 
-  const groups = groupBy(contents, item => item.name[0].toUpperCase());
+  const groups = groupBy(sortedContents, item => item.name[0].toUpperCase());
   // Filter out dotfiles
   delete groups["."];
 
   if (Object.keys(groups).length <= 1) {
-    return <DirectoryListing contents={contents} basepath={props.basepath} />;
+    return <DirectoryListing contents={sortedContents} basepath={props.basepath} />;
   }
 
   const groupNames = Object.keys(groups).sort();
