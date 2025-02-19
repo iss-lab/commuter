@@ -20,6 +20,7 @@ export type DirectoryListingProps = {
 const GroupedDirectoryListings = (props: DirectoryListingProps) => {
   const contents = props.contents.filter(row => !row.name.startsWith("."));
 	const sortedContents = contents.sort((a, b) => {return new Date(b.last_modified) - new Date(a.last_modified)}).slice(0,100);
+	console.log(sortedContents);
   if (sortedContents.length <= 25) {
     return <DirectoryListing contents={sortedContents} basepath={props.basepath} />;
   }
